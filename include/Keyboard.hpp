@@ -1,1 +1,3 @@
-#include <SDl2/SDL.h>
+#pragma once
+#include <SDL2/SDL.h>
+void HandleKeyboard();

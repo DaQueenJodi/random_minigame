@@ -1,3 +1,4 @@
+#include "Keyboard.hpp"
 #include "Player.hpp"
 #include "Game.hpp"
 #include  <SDL2/SDL.h>
@@ -11,10 +12,16 @@ SDL_Renderer* Game::renderer = nullptr;
 SDL_Rect Player::player_rect;
 int Player::width;
 int Player::height;
+// debug stuff
+float Game::last_speed;
+float Game::last_y;
+float Game::last_x;
 
-void Game::CreatePlayer(int x, int y, unsigned int s = 1, const char* path = "gfx/player.png")
+void Game::CreatePlayer(float x, float y, float s, const char* path = "gfx/player.png")
 {
+    printf("%f", s);
     Player::speed = s;
+      printf("%f", Player::speed);
     Player::xpos = x;
     Player::ypos = y;
     Player::image = IMG_LoadTexture(renderer, path); 
@@ -35,12 +42,16 @@ void Game::Start()
 
 void Game::HandleEvents()
 {
+    HandleKeyboard();
     while (SDL_PollEvent(&Game::event))
     {
         switch (event.type)
         {
             case SDL_QUIT:
                 Game::running = false;
+                break; 
+            default:
+                break;
         }
     }
 }
@@ -65,4 +76,26 @@ void Game::Clean()
     SDL_DestroyRenderer(Game::renderer);
     SDL_DestroyWindow(Game::window);
     SDL_Quit();
+}
+
+
+void Game::HandleDebug()
+{
+
+    //bunch of messy code but no one will use this but me so who cares 
+        Game::last_x = Player::xpos;
+        
+        printf("current X coordinate: %f \n", Player::xpos);
+
+        Game::last_y = Player::ypos;
+       
+        printf("current Y coordinate: %f \n", Player::ypos);
+
+        Game::last_speed = Player::speed;
+       
+        printf("current player speed: %f \n", Player::speed);
+
+        // clear the screen 
+        printf("\033[H\033[2J\033[3J");
+    
 }

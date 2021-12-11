@@ -5,8 +5,14 @@
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
+
 int main(int argc, char** argv)
 {
+    bool debug = false;
+    if (argv[1])
+        debug = true;
+
+
     if (SDL_Init( SDL_INIT_EVERYTHING ) < 0) {
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
     } else {
@@ -16,12 +22,14 @@ int main(int argc, char** argv)
     Game::Start();
     }
 
-    Game::CreatePlayer(50, 80, 1, "gfx/player.png");
+    Game::CreatePlayer(50, 80, 1.5, "gfx/player.png");
 
     while (Game::Running())
     {
         Game::HandleEvents();
         Game::Update();
+        if (debug)
+            Game::HandleDebug();
     }   
     Game::Clean();
     return 0;

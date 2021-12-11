@@ -2,17 +2,25 @@
 #include "Player.hpp"
 #include <SDL2/SDL.h>
 
-void HandleKeyboard(SDL_Event event)
+void HandleKeyboard()
 {
-    switch (event.button)
+    auto keystate = SDL_GetKeyboardState(NULL);
+    float s = Player::get_speed();
+    if (keystate[SDL_SCANCODE_LSHIFT] | keystate[SDL_SCANCODE_RSHIFT])
     {
-        case SDLK_w:
-            Player::Up();
-        case SDLK_a:
-            Player::Left();
-        case SDLK_s:
-            Player::Down();
-        case SDLK_d:
-            Player::Right();
+        Player::set_speed(s * 2.0f);
     }
+
+
+
+    if (keystate[SDL_SCANCODE_W])
+        Player::Up();
+    if (keystate[SDL_SCANCODE_A])
+        Player::Left();
+    if (keystate[SDL_SCANCODE_S])
+        Player::Down();
+    if (keystate[SDL_SCANCODE_D])
+        Player::Right();
+    
+    Player::set_speed(s);
 }

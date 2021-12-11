@@ -3,6 +3,11 @@
 class Game
 {
     private:
+        // for debug
+        static float last_x;
+        static float last_y;
+        static float last_speed;
+
         static SDL_Event event;
 
         static bool running;
@@ -12,7 +17,9 @@ class Game
         static bool Running();
         static void Start();
         static void Clean();
-        static void CreatePlayer(int x, int y, unsigned int speed, const char* path);
+        static void CreatePlayer(float x, float y, float s, const char* path);
+
+        static void HandleDebug();
 
         static SDL_Window* window;
         static SDL_Renderer* renderer;

@@ -7,17 +7,21 @@
 class Player
 {
 private:
-    static int xpos;
-    static int ypos;
+    static float xpos;
+    static float ypos;
     static int height;
     static int width;
-    static unsigned int speed;
+    static float speed;
     static bool canshoot;
     static bool canwalk;
     static SDL_Texture* image;
     friend class Game;
 public:
-    static unsigned int get_speed(); 
-    static void set_speed(unsigned int num);
+    static void Up();
+    static void Left();
+    static void Down();
+    static void Right();
+    static float get_speed(); 
+    static void set_speed(float num);
     static SDL_Rect player_rect;
 };
