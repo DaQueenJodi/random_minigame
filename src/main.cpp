@@ -22,12 +22,14 @@ int main(int argc, char** argv)
     Game::Start();
     }
 
-    Game::CreatePlayer(50, 80, 1.5, "gfx/player.png");
+    Game::CreatePlayer(50, 80, 1, "gfx/player.png");
+    Game::CreateGun(0, 10, "gfx/gun.png", "gfx/bullet.png");
 
     while (Game::Running())
     {
         Game::HandleEvents();
         Game::Update();
+        Game::Draw();
         if (debug)
             Game::HandleDebug();
     }   

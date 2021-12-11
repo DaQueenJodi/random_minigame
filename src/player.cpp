@@ -16,17 +16,21 @@ float Player::get_speed()
 }
 void Player::Up()
 {
-    Player::ypos -= 10 * Player::speed;
+    if (Player::canwalk)
+        Player::ypos -= 10 * Player::speed;
 }
 void Player::Left()
 {
-    Player::xpos -= 10 * Player::speed;
+    if (Player::canwalk)
+        Player::xpos -= 10 * Player::speed;
 }
 void Player::Down()
 {
-    Player::ypos += 10 * Player::speed;
+    if (Player::canwalk)
+        Player::ypos += 10 * Player::speed;
 }
 void Player::Right()
 {
-    Player::xpos += 10 * Player::speed;
+    if (Player::canwalk)
+        Player::xpos += 10 * Player::speed;
 }

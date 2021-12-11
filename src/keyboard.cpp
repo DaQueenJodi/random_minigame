@@ -8,7 +8,7 @@ void HandleKeyboard()
     float s = Player::get_speed();
     if (keystate[SDL_SCANCODE_LSHIFT] | keystate[SDL_SCANCODE_RSHIFT])
     {
-        Player::set_speed(s * 2.0f);
+        Player::set_speed(s * 1.25f);
     }
 
 

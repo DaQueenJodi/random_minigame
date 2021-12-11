@@ -16,6 +16,7 @@ private:
     static bool canwalk;
     static SDL_Texture* image;
     friend class Game;
+    friend class Gun;
 public:
     static void Up();
     static void Left();
@@ -23,5 +24,4 @@ public:
     static void Right();
     static float get_speed(); 
     static void set_speed(float num);
-    static SDL_Rect player_rect;
 };
