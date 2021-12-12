@@ -3,6 +3,7 @@
 #include "Game.hpp"
 #include "Gun.hpp"
 #include "Collision.hpp"
+#include "Enemies.hpp"
 #include  <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -65,8 +66,8 @@ bool Game::Running()
     return Game::running;
 }
 
-int Game::Window_Width = NULL;
-int Game::Window_Height = NULL;
+int Game::Window_Width;
+int Game::Window_Height;
 void Game::Start()
 {   
     SDL_GetWindowSize(window, &Game::Window_Width, &Game::Window_Height); 
@@ -193,4 +194,14 @@ void Game::HandleDebug()
         // clear the screen 
         printf("\033[H\033[2J\033[3J");
     
+}
+
+
+void Game::CreateEnemy(Enemies enemy_choice)
+{
+    if (enemy_choice == Enemies::Basic_Shooter)
+    {
+        Basic_Shooter* new_enemy = new Basic_Shooter();
+        Basic_Shooter::enemy_list.push_back(new_enemy);
+    }
 }

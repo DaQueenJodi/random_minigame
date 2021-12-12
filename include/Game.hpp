@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include "Enemies.hpp"
 class Game
 {
     private:
@@ -18,6 +19,7 @@ class Game
         static bool Running();
         static void Start();
         static void Clean();
+        static void CreateEnemy(Enemies enemy_choice);
         static void CreatePlayer(float x, float y, float s, const char* path);
         static void CreateGun(unsigned int per_shot, unsigned int max_ammo, const char* path, const char* path2);
         

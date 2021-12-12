@@ -36,28 +36,22 @@ void Player::Right()
         Player::xpos += 10 * Player::speed;
 }
 
-bool Player::CheckBounds()
+void Player::CheckBounds()
 {
-    int result = Collision::out_of_bounds(Player::xpos, Player::ypos);
-    if (result)
+    if (Player::xpos < 0)
     {
-        if (result == 1)
-        {
-            Player::xpos = 0;
-        }
-        else if (result == 2)
-        {
-            Player::xpos = Game::Window_Width;
-        }
-        else if (result == 3)
-        {
-            Player::ypos = 0;
-        }
-        else if (result == 4)
-        {
-            Player::ypos = Game::Window_Height;
-        }
-        return true;
+        Player::xpos = 0;
     }
-    return false;
+    if (Player::xpos > Game::Window_Width - 35 )
+    {
+        Player::xpos = Game::Window_Width - 35;
+    }
+    if (Player::ypos <  0)
+    {
+        Player::ypos = 0;
+    }
+    if ( Player::ypos > Game::Window_Height - 35)
+    {
+        Player::ypos = Game::Window_Height - 35 ;
+    }
 }
