@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Collision.hpp"
 
 float Player::xpos;
 float Player::ypos;
@@ -33,4 +34,30 @@ void Player::Right()
 {
     if (Player::canwalk)
         Player::xpos += 10 * Player::speed;
+}
+
+bool Player::CheckBounds()
+{
+    int result = Collision::out_of_bounds(Player::xpos, Player::ypos);
+    if (result)
+    {
+        if (result == 1)
+        {
+            Player::xpos = 0;
+        }
+        else if (result == 2)
+        {
+            Player::xpos = Game::Window_Width;
+        }
+        else if (result == 3)
+        {
+            Player::ypos = 0;
+        }
+        else if (result == 4)
+        {
+            Player::ypos = Game::Window_Height;
+        }
+        return true;
+    }
+    return false;
 }

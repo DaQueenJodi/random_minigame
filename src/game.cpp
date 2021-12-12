@@ -2,6 +2,7 @@
 #include "Player.hpp"
 #include "Game.hpp"
 #include "Gun.hpp"
+#include "Collision.hpp"
 #include  <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -64,8 +65,11 @@ bool Game::Running()
     return Game::running;
 }
 
+int Game::Window_Width = NULL;
+int Game::Window_Height = NULL;
 void Game::Start()
-{
+{   
+    SDL_GetWindowSize(window, &Game::Window_Width, &Game::Window_Height); 
     Game::running = true;
 }
 
@@ -107,9 +111,16 @@ void Game::Update()
     Gun::angle = Game::get_degree(Gun::xpos, Gun::ypos, mouse_x, mouse_y);
 
 
-    for (auto& b : Gun::bullets)
+    for (unsigned int i = 0; i < Gun::bullets.size(); ++i)
     {
+        auto* b = Gun::bullets[i];
         b->Move();
+
+        if (Collision::out_of_bounds(b->xpos, b->ypos))
+        {
+            delete b;
+            Gun::bullets.erase(Gun::bullets.begin()+i);
+        }
     }
 
 
@@ -141,7 +152,7 @@ void Game::Draw()
         bull_rect.y = b->ypos;
         bull_rect.h = b->height;
         bull_rect.w = b->width;
-        SDL_RenderCopyEx(renderer, b->image, NULL, &bull_rect, b->angle, NULL, SDL_FLIP_NONE);  
+        SDL_RenderCopyEx(renderer, b->image, NULL, &bull_rect, b->direction, NULL, SDL_FLIP_NONE);  
     }
 
 

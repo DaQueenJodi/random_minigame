@@ -25,6 +25,9 @@ class Game
 
         static void HandleDebug();
 
+        static int Window_Width;
+        static int Window_Height;
+
         static SDL_Window* window;
         static SDL_Renderer* renderer;
 };

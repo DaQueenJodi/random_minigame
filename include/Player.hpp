@@ -24,4 +24,5 @@ public:
     static void Right();
     static float get_speed(); 
     static void set_speed(float num);
+    static bool CheckBounds();
 };

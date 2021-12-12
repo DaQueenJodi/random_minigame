@@ -2,8 +2,6 @@
 #include <iostream>
 #include "Game.hpp"
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 600;
 
 
 int main(int argc, char** argv)
@@ -17,7 +15,7 @@ int main(int argc, char** argv)
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
     } else {
        
-    Game::window = SDL_CreateWindow( "Welp", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    Game::window = SDL_CreateWindow( "Welp", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
     Game::renderer = SDL_CreateRenderer(Game::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     Game::Start();
     }

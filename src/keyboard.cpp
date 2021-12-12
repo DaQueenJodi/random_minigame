@@ -23,4 +23,5 @@ void HandleKeyboard()
         Player::Right();
     
     Player::set_speed(s);
+    Player::CheckBounds();
 }
