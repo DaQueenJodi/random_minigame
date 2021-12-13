@@ -11,6 +11,7 @@ bool Collision::AABB(SDL_Rect rect1, SDL_Rect rect2)
         }
         return false;
 }
+
 int Collision::out_of_bounds(int x, int y)
 {
     if (x < 0  )

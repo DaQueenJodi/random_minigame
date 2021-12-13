@@ -21,7 +21,7 @@ class Game
         static void Clean();
         static void CreateEnemy(Enemies enemy_choice);
         static void CreatePlayer(float x, float y, float s, const char* path);
-        static void CreateGun(unsigned int per_shot, unsigned int max_ammo, const char* path, const char* path2);
+        static void CreateGun(unsigned int per_shot, unsigned int max_ammo, int dmg, const char* path, const char* path2);
         
         static float get_degree(float orgin_x, float orgin_y, float other_x, float other_y);
 

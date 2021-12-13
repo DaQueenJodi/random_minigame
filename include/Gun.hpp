@@ -18,6 +18,7 @@ class Gun
         static unsigned int max_ammo;
         static unsigned int ammo_per_shot;
         static std::string gun_name;
+        static int bullet_damage;
         friend class Game;
     public:
         static std::vector<Bullet*> bullets;

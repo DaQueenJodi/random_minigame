@@ -3,9 +3,17 @@
 #include <vector>
 class Enemy
 {
-    public:
+    private:
         int health;
         SDL_Texture* image;
-        static std::vector<Enemy*> enemies;
+        float xpos;
+        float ypos;
+        int height;
+        int width;
+        friend class Game;
+    public:
+    static std::vector<Enemy*> enemies;
         int get_health();
+        Enemy(float x, float y, int health, const char* path);
+
 };

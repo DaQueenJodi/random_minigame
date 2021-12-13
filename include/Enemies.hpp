@@ -1,9 +1,18 @@
 #pragma once
-#include "Enemy.hpp"
-#include "Basic_Shooter.hpp"
+#include <vector>
 
-enum Enemies
+ enum Enemies
+    {
+        Basic_Shooter,
+        Basic_Runner
+    };
+
+class EnemyUtils
 {
-    Basic_Shooter,
-    Basic_Runner
+    public:
+        
+
+
+    
+
 };
