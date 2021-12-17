@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include "Game.hpp"
+#include "GameWindow.hpp"
 
 
 
@@ -15,8 +16,8 @@ int main(int argc, char** argv)
         std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
     } else {
        
-    Game::window = SDL_CreateWindow( "Welp", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    Game::renderer = SDL_CreateRenderer(Game::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    GameWindow::window = SDL_CreateWindow( "Welp", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
+    GameWindow::renderer = SDL_CreateRenderer(GameWindow::window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     Game::Start();
     }
 

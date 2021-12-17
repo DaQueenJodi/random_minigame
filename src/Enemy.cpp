@@ -1,18 +1,13 @@
 #include "Enemy.hpp"
-#include "Game.hpp"
+#include "GameWindow.hpp"
 
-std::vector<Enemy*> Enemy::enemies;
+std::vector<Enemy*> Enemy::enemies = {};
 
-Enemy::Enemy(float x, float y, int h, const char* path)
+Basic_Shooter::Basic_Shooter(int x, int y)
 {
     xpos = x;
     ypos = y;
-    health = h;
-    image = IMG_LoadTexture(Game::renderer, path);
+    image = IMG_LoadTexture(GameWindow::renderer, "gfx/basic_shooter.png");
     SDL_QueryTexture(image, NULL, NULL, &width, &height);
-}
 
-int Enemy::get_health()
-{
-    return health;
 }

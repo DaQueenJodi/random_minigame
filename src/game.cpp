@@ -7,12 +7,10 @@
 #include "Enemy.hpp"
 #include  <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
+#include "GameWindow.hpp"
 
 bool Game::running = false;
 SDL_Event Game::event;
-SDL_Window* Game::window = nullptr;
-SDL_Renderer* Game::renderer = nullptr;
 
 int Player::width;
 int Player::height;
@@ -22,8 +20,8 @@ bool Player::canwalk;
 
 SDL_Texture* Gun::image;
 SDL_Texture* Gun::bullet_image;
-float Gun::xpos;
-float Gun::ypos;
+int Gun::xpos;
+int Gun::ypos;
 int Gun::height;
 int Gun::width;
 float Gun::angle;
@@ -47,7 +45,7 @@ void Game::CreatePlayer(float x, float y, float s, const char* path)
     Player::speed = s;
     Player::xpos = x;
     Player::ypos = y;
-    Player::image = IMG_LoadTexture(renderer, path); 
+    Player::image = IMG_LoadTexture(GameWindow::renderer, path); 
     // set the height and width of player based on the image height and width
     SDL_QueryTexture(Player::image, NULL, NULL, &Player::width, &Player::height);
 
@@ -55,12 +53,12 @@ void Game::CreatePlayer(float x, float y, float s, const char* path)
 
 void Game::CreateGun(unsigned int per_shot, unsigned int ammo_max, int dmg, const char* path, const char* path2)
 {
-    Gun::xpos = Player::xpos + 20;
-    Gun::ypos = Player::ypos;
+    //Gun::xpos = Player::xpos + 20;
+    //Gun::ypos = Player::ypos;
     Gun::ammo_per_shot = per_shot;
     Gun::max_ammo = ammo_max;
-    Gun::image = IMG_LoadTexture(renderer, path);
-    Gun::bullet_image = IMG_LoadTexture(renderer, path2);
+    Gun::image = IMG_LoadTexture(GameWindow::renderer, path);
+    Gun::bullet_image = IMG_LoadTexture(GameWindow::renderer, path2);
     Gun::bullet_damage = dmg;
     // set the height and width of the gun and bullet based on the image height and width
     SDL_QueryTexture(Gun::image, NULL, NULL, &Gun::width, &Gun::height);
@@ -72,11 +70,10 @@ bool Game::Running()
     return Game::running;
 }
 
-int Game::Window_Width;
-int Game::Window_Height;
+
 void Game::Start()
 {   
-    SDL_GetWindowSize(window, &Game::Window_Width, &Game::Window_Height); 
+    SDL_GetWindowSize(GameWindow::window, &GameWindow::width, &GameWindow::height); 
     Game::running = true;
 }
 
@@ -130,28 +127,19 @@ void Game::Update()
         }
     }
     
-    {
     for (unsigned int i = 0; i < Enemy::enemies.size(); ++i)
     {
         auto* e = Enemy::enemies[i];
         //e->Move;
 
-        SDL_Rect enemy_rect;
-
-        enemy_rect.x = e->xpos;
-        enemy_rect.y = e->ypos;
-        enemy_rect.h = e->height;
-        enemy_rect.w = e->width;
+        SDL_Rect enemy_rect = entity_to_rect(e);
+        // offset the x value so that guns appears near the player; not on top
+        enemy_rect.x += 100;
 
          for (auto& b : Gun::bullets)
          {
 
-                SDL_Rect bullet_rect;
-
-                bullet_rect.x = b->xpos;
-                bullet_rect.y = b->ypos;
-                bullet_rect.h = b->height;
-                bullet_rect.w = b->width;
+                SDL_Rect bullet_rect = entity_to_rect(b);
 
             if(Collision::AABB(enemy_rect, bullet_rect))
             {
@@ -168,27 +156,27 @@ void Game::Update()
     }
             
 
-    }
 }
 
 void Game::Draw()
 {
-    SDL_RenderClear(Game::renderer);
+    SDL_RenderClear(GameWindow::renderer);
 
     SDL_Rect player_rect;
+    player_rect.x = Gun::xpos;
+    player_rect.y = Gun::ypos;
+    player_rect.h = Gun::height;
+    player_rect.w = Gun::width;
 
-    player_rect.x = Player::xpos;
-    player_rect.y = Player::ypos;
-    player_rect.h = Player::height;
-    player_rect.w = Player::width;
-    SDL_RenderCopy(renderer, Player::image, NULL, &player_rect);   
+   
+    SDL_RenderCopy(GameWindow::renderer, Player::image, NULL, &player_rect);   
 
     SDL_Rect gun_rect;
     gun_rect.x = Gun::xpos;
     gun_rect.y = Gun::ypos;
     gun_rect.h = Gun::height;
     gun_rect.w = Gun::width;
-    SDL_RenderCopyEx(renderer, Gun::image, NULL, &gun_rect, Gun::angle, NULL, SDL_FLIP_NONE);   
+    SDL_RenderCopyEx(GameWindow::renderer, Gun::image, NULL, &gun_rect, Gun::angle, NULL, SDL_FLIP_NONE);   
 
     for (auto& b : Gun::bullets)
     {
@@ -197,7 +185,7 @@ void Game::Draw()
         bull_rect.y = b->ypos;
         bull_rect.h = b->height;
         bull_rect.w = b->width;
-        SDL_RenderCopyEx(renderer, b->image, NULL, &bull_rect, b->direction, NULL, SDL_FLIP_NONE);  
+        SDL_RenderCopyEx(GameWindow::renderer, b->image, NULL, &bull_rect, b->direction, NULL, SDL_FLIP_NONE);  
     }
 
     for (auto& e : Enemy::enemies)
@@ -207,10 +195,10 @@ void Game::Draw()
         enemy_rect.y = e->ypos;
         enemy_rect.h = e->height;
         enemy_rect.w = e->width;
-        SDL_RenderCopy(renderer, e->image, NULL, &enemy_rect);  
+        SDL_RenderCopy(GameWindow::renderer, e->image, NULL, &enemy_rect);  
     }
 
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(GameWindow::renderer);
     
 }
 
@@ -221,8 +209,8 @@ void Game::Clean()
         delete b;
     }
     SDL_DestroyTexture(Player::image);
-    SDL_DestroyRenderer(Game::renderer);
-    SDL_DestroyWindow(Game::window);
+    SDL_DestroyRenderer(GameWindow::renderer);
+    SDL_DestroyWindow(GameWindow::window);
     SDL_Quit();
 }
 
@@ -255,15 +243,27 @@ void Game::HandleDebug()
 
 void Game::CreateEnemy(Enemies enemy_choice)
 {
+    Enemy* new_enemy = nullptr;
     switch (enemy_choice)
     {
         case Enemies::Basic_Shooter:
             {
-                Enemy* new_enemy = new Enemy(100, 100, 100, "gfx/basic_shooter.png");
-                Enemy::enemies.push_back(new_enemy);
+                new_enemy = new Basic_Shooter(100, 100, 100, "gfx/basic_shooter.png");
                 break;
             }
         default:
             break;
     }
+}
+template <class entity>
+SDL_Rect Game::entity_to_rect(const entity& src)
+{
+    SDL_Rect dst;
+
+    dst.x = src->xpos;
+    dst.y = src->ypos;
+    dst.h = src->height;
+    dst.w =src->width;
+    
+    return dst;
 }

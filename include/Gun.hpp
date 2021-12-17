@@ -10,8 +10,8 @@ class Gun
     private:
         static SDL_Texture* image;
         static SDL_Texture* bullet_image;
-        static float xpos;
-        static float ypos;
+        static int xpos;
+        static int ypos;
         static int height;
         static int width;
         static float angle;

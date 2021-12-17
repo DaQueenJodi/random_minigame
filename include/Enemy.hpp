@@ -3,7 +3,7 @@
 #include <vector>
 class Enemy
 {
-    private:
+    public:
         int health;
         SDL_Texture* image;
         float xpos;
@@ -11,9 +11,13 @@ class Enemy
         int height;
         int width;
         friend class Game;
-    public:
-    static std::vector<Enemy*> enemies;
+        
+        static std::vector<Enemy*> enemies;
         int get_health();
-        Enemy(float x, float y, int health, const char* path);
+};
 
+class Basic_Shooter : public Enemy
+{
+    public:
+        Basic_Shooter(int x, int y);
 };

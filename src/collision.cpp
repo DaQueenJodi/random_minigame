@@ -1,5 +1,5 @@
 #include "Collision.hpp"
-#include "Game.hpp"
+#include "GameWindow.hpp"
 
 bool Collision::AABB(SDL_Rect rect1, SDL_Rect rect2)
 {
@@ -18,7 +18,7 @@ int Collision::out_of_bounds(int x, int y)
     {
         return 1;
     }
-    if (x > Game::Window_Width)
+    if (x > GameWindow::width)
     {
         return 2;
     }
@@ -26,7 +26,7 @@ int Collision::out_of_bounds(int x, int y)
     {
         return 3;
     }
-    if (y > Game::Window_Height)
+    if (y > GameWindow::height)
     {
         return 4;
     }
