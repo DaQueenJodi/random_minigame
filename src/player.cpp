@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include "Collision.hpp"
+#include "GameWindow.hpp"
 
 float Player::xpos;
 float Player::ypos;
@@ -42,16 +43,16 @@ void Player::CheckBounds()
     {
         Player::xpos = 0;
     }
-    if (Player::xpos > Game::Window_Width - 35 )
+    if (Player::xpos > GameWindow::width - 35 )
     {
-        Player::xpos = Game::Window_Width - 35;
+        Player::xpos = GameWindow::width - 35;
     }
     if (Player::ypos <  0)
     {
         Player::ypos = 0;
     }
-    if ( Player::ypos > Game::Window_Height - 35)
+    if ( Player::ypos > GameWindow::height - 35)
     {
-        Player::ypos = Game::Window_Height - 35 ;
+        Player::ypos = GameWindow::height - 35 ;
     }
 }

@@ -36,7 +36,10 @@ float Game::last_speed;
 float Game::last_y;
 float Game::last_x;
 
-class Basic_Shooter;
+int GameWindow::width;
+int GameWindow::height;
+SDL_Renderer* GameWindow::renderer;
+SDL_Window* GameWindow::window;
 
 void Game::CreatePlayer(float x, float y, float s, const char* path)
 {
@@ -241,19 +244,11 @@ void Game::HandleDebug()
 }
 
 
-void Game::CreateEnemy(Enemies enemy_choice)
+void Game::CreateEnemy(EnemyUtils::Enemies enemy_choice)
 {
     Enemy* new_enemy = nullptr;
-    switch (enemy_choice)
-    {
-        case Enemies::Basic_Shooter:
-            {
-                new_enemy = new Basic_Shooter(100, 100, 100, "gfx/basic_shooter.png");
-                break;
-            }
-        default:
-            break;
-    }
+    new_enemy = new Basic_Shooter(100,100);
+    
 }
 template <class entity>
 SDL_Rect Game::entity_to_rect(const entity& src)

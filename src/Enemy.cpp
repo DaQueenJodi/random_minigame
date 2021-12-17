@@ -5,6 +5,7 @@ std::vector<Enemy*> Enemy::enemies = {};
 
 Basic_Shooter::Basic_Shooter(int x, int y)
 {
+    health = 10;
     xpos = x;
     ypos = y;
     image = IMG_LoadTexture(GameWindow::renderer, "gfx/basic_shooter.png");

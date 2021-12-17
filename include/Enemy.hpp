@@ -1,4 +1,5 @@
 #pragma once
+#warning c++_sucks
 #include <SDL2/SDL_image.h>
 #include <vector>
 class Enemy
@@ -10,10 +11,7 @@ class Enemy
         float ypos;
         int height;
         int width;
-        friend class Game;
-        
         static std::vector<Enemy*> enemies;
-        int get_health();
 };
 
 class Basic_Shooter : public Enemy

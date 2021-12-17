@@ -24,7 +24,7 @@ class Game
         static bool Running();
         static void Start();
         static void Clean();
-        static void CreateEnemy(Enemies enemy_choice);
+        static void CreateEnemy(EnemyUtils::Enemies enemy_choice);
         static void CreatePlayer(float x, float y, float s, const char* path);
         static void CreateGun(unsigned int per_shot, unsigned int max_ammo, int dmg, const char* path, const char* path2);
         
