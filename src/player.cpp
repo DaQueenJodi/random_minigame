@@ -43,16 +43,16 @@ void Player::CheckBounds()
     {
         Player::xpos = 0;
     }
-    if (Player::xpos > GameWindow::width - 35 )
+    if (Player::xpos > GameWindow::width)
     {
-        Player::xpos = GameWindow::width - 35;
+        Player::xpos = GameWindow::width;
     }
     if (Player::ypos <  0)
     {
         Player::ypos = 0;
     }
-    if ( Player::ypos > GameWindow::height - 35)
+    if ( Player::ypos > GameWindow::height)
     {
-        Player::ypos = GameWindow::height - 35 ;
+        Player::ypos = GameWindow::height ;
     }
 }

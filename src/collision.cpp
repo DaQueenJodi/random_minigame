@@ -1,15 +1,11 @@
 #include "Collision.hpp"
 #include "GameWindow.hpp"
 
-bool Collision::AABB(SDL_Rect rect1, SDL_Rect rect2)
+bool Collision::AABB(SDL_Rect a, SDL_Rect b)
 {
-    // if rect1 is inside of rect2 (or vise versa), return true 
-    if (rect1.x < rect2.x + rect2.w && rect1.x + rect1.w > rect2.x &&
-        rect1.y < rect2.y + rect2.h && rect1.y + rect1.h > rect2.y)
-        {
-            return true;
-        }
-        return false;
+    bool x_overlaps =  (a.x < b.x + b.w) && (a.x + a.w > b.x );
+    bool y_overlaps = (a.y < b.y + b.h) && (a.y + a.h > b.y);
+    return (x_overlaps && y_overlaps);
 }
 
 int Collision::out_of_bounds(int x, int y)
@@ -18,7 +14,7 @@ int Collision::out_of_bounds(int x, int y)
     {
         return 1;
     }
-    if (x > GameWindow::width)
+    if (x > GameWindow::width )
     {
         return 2;
     }
@@ -26,7 +22,7 @@ int Collision::out_of_bounds(int x, int y)
     {
         return 3;
     }
-    if (y > GameWindow::height)
+    if (y > GameWindow::height )
     {
         return 4;
     }

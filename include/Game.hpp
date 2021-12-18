@@ -1,10 +1,11 @@
 #pragma once
 #include <SDL2/SDL.h>
-#include "Enemies.hpp"
+#include "EnemyUtils.hpp"
 class Game
 {
     private:
         // for debug
+        static SDL_Texture* test_hitbox;
         static float last_x;
         static float last_y;
         static float last_speed;
@@ -24,7 +25,7 @@ class Game
         static bool Running();
         static void Start();
         static void Clean();
-        static void CreateEnemy(EnemyUtils::Enemies enemy_choice);
+        static void CreateEnemy(EnemyUtils::EnemyType enemy_choice);
         static void CreatePlayer(float x, float y, float s, const char* path);
         static void CreateGun(unsigned int per_shot, unsigned int max_ammo, int dmg, const char* path, const char* path2);
         

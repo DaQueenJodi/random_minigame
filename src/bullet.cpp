@@ -1,4 +1,5 @@
 #include "Bullet.hpp"
+#include <SDL2/SDL.h>
 #include <math.h>
 
 
@@ -18,4 +19,9 @@ void Bullet::Move()
 {
     xpos += speed * cos(angle);
     ypos += speed * sin(angle);
+}
+
+Bullet::~Bullet()
+{
+    //SDL_DestroyTexture(image);
 }

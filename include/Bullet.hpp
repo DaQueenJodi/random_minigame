@@ -19,5 +19,6 @@ class Bullet
     public:
         void Move();
         Bullet(float x, float y, float real_angle, float bull_angle, int dmg, SDL_Texture* img);
+        ~Bullet();
     
 };

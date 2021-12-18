@@ -8,19 +8,23 @@
 class Gun
 {
     private:
-        static SDL_Texture* image;
-        static SDL_Texture* bullet_image;
-        static int xpos;
-        static int ypos;
-        static int height;
-        static int width;
-        static float angle;
+        static Gun* curr_gun;
+        SDL_Texture* image;
+        SDL_Texture* bullet_image;
+        int xpos;
+        int ypos;
+        int height;
+        int width;
+        float angle;
         static unsigned int max_ammo;
         static unsigned int ammo_per_shot;
         static std::string gun_name;
         static int bullet_damage;
         friend class Game;
     public:
+        ~Gun();
+        Gun();
+        Gun(int x, int y);
         static std::vector<Bullet*> bullets;
         static void PewPew();
         static SDL_Rect gun_rect;

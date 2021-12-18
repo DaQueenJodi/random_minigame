@@ -23,16 +23,16 @@ int main(int argc, char** argv)
 
     Game::CreatePlayer(50, 80, 1, "gfx/player.png");
     Game::CreateGun(0, 10, 5, "gfx/gun.png", "gfx/bullet.png");
-    Game::CreateEnemy(EnemyUtils::Enemies::Basic_Shooter);
+    Game::CreateEnemy(EnemyUtils::EnemyType::Basic_Shooter);
 
     while (Game::Running())
     {
+        if (debug)
+            Game::HandleDebug();   
         Game::HandleEvents();
         Game::Update();
         Game::Draw();
-        if (debug)
-            Game::HandleDebug();
-    }   
+    }
     Game::Clean();
     return 0;
 }
