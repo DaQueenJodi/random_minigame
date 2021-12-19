@@ -4,24 +4,18 @@
 #include <SDL2/SDL_image.h>
 #include "Game.hpp"
 #include "Bullet.hpp"
+#include "Entity.hpp"
 
-class Gun
+class Gun : public Entity
 {
-    private:
-        static Gun* curr_gun;
+    public:
         SDL_Texture* image;
         SDL_Texture* bullet_image;
-        int xpos;
-        int ypos;
-        int height;
-        int width;
         float angle;
         static unsigned int max_ammo;
         static unsigned int ammo_per_shot;
         static std::string gun_name;
         static int bullet_damage;
-        friend class Game;
-    public:
         ~Gun();
         Gun();
         Gun(int x, int y);

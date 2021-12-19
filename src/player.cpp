@@ -1,58 +1,53 @@
 #include "Player.hpp"
 #include "Collision.hpp"
 #include "GameWindow.hpp"
+#include "Entities.hpp"
 
-float Player::xpos;
-float Player::ypos;
 float Player::speed;
-SDL_Texture* Player::image = NULL;
 
 
-void Player::set_speed(float num)
-{
-    Player::speed = num;
-}
-float Player::get_speed()
-{
-    return Player::speed;
-}
+
 void Player::Up()
 {
-    if (Player::canwalk)
-        Player::ypos -= 10 * Player::speed;
+        Entities::curr_player->ypos -= 10 * Player::speed;
 }
 void Player::Left()
 {
-    if (Player::canwalk)
-        Player::xpos -= 10 * Player::speed;
+       Entities::curr_player->xpos -= 10 * Player::speed;
 }
 void Player::Down()
 {
-    if (Player::canwalk)
-        Player::ypos += 10 * Player::speed;
+        Entities::curr_player->ypos += 10 * Player::speed;
 }
 void Player::Right()
 {
-    if (Player::canwalk)
-        Player::xpos += 10 * Player::speed;
+       Entities::curr_player->xpos += 10 * Player::speed;
 }
 
 void Player::CheckBounds()
 {
-    if (Player::xpos < 0)
+    if (Entities::curr_player->xpos < 0)
     {
-        Player::xpos = 0;
+        Entities::curr_player->xpos = 0;
     }
-    if (Player::xpos > GameWindow::width)
+    if (Entities::curr_player->xpos > GameWindow::width)
     {
-        Player::xpos = GameWindow::width;
+        Entities::curr_player->xpos = GameWindow::width;
     }
-    if (Player::ypos <  0)
+    if (Entities::curr_player->ypos <  0)
     {
-        Player::ypos = 0;
+        Entities::curr_player->ypos = 0;
     }
-    if ( Player::ypos > GameWindow::height)
+    if ( Entities::curr_player->ypos > GameWindow::height)
     {
-        Player::ypos = GameWindow::height ;
+       Entities::curr_player->ypos = GameWindow::height;
     }
+}
+
+
+Player::Player(int x, int y)
+{
+    xpos = x;
+    ypos = y;
+    speed = 1;
 }

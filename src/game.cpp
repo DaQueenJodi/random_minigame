@@ -9,14 +9,10 @@
 #include <SDL2/SDL_image.h>
 #include "GameWindow.hpp"
 #include "Entities.hpp"
+#include <iostream>
 
 bool Game::running = false;
 SDL_Event Game::event;
-
-int Player::width;
-int Player::height;
-bool Player::canshoot;
-bool Player::canwalk;
 
 
 unsigned int Gun::max_ammo;
@@ -26,11 +22,10 @@ int Gun::bullet_damage;
 
 
 // debug stuff
-float Game::last_speed;
-float Game::last_y;
-float Game::last_x;
 SDL_Texture* Game::test_hitbox = IMG_LoadTexture(GameWindow::renderer, "gfx/hitbox_test.png");
 
+SDL_Surface* cursor_surface = IMG_Load("gfx/cursor.png");
+SDL_Cursor* cursor = SDL_CreateColorCursor(cursor_surface, 0, 0);
 
 int GameWindow::width;
 int GameWindow::height;
@@ -40,18 +35,16 @@ SDL_Window* GameWindow::window;
 std::vector<Enemy*> Entities::enemies;
 
 Gun* Entities::curr_gun;
+Player* Entities::curr_player;
 
 
-void Game::CreatePlayer(float x, float y, float s, const char* path)
-{
-    Player::canwalk = true;
-    Player::canshoot = true;
-    Player::speed = s;
-    Player::xpos = x;
-    Player::ypos = y;
-    Player::image = IMG_LoadTexture(GameWindow::renderer, path); 
+void Game::CreatePlayer(float x, float y, const char* path)
+{   
+    Player* player = new Player(x, y);
+    player->image = IMG_LoadTexture(GameWindow::renderer, path); 
     // set the height and width of player based on the image height and width
-    SDL_QueryTexture(Player::image, NULL, NULL, &Player::width, &Player::height);
+    SDL_QueryTexture(player->image, NULL, NULL, &player->width, &player->height);
+    Entities::curr_player = player;
 
 }
 
@@ -79,6 +72,7 @@ bool Game::Running()
 void Game::Start()
 {   
     SDL_GetWindowSize(GameWindow::window, &GameWindow::width, &GameWindow::height); 
+    SDL_SetCursor(cursor);
     Game::running = true;
 }
 
@@ -116,8 +110,9 @@ void Game::Update()
     SDL_GetMouseState(&mouse_x, &mouse_y);
     {
     Gun* gun = Entities::curr_gun;
-    gun->xpos = Player::xpos + 100;
-    gun->ypos = Player::ypos;
+    Player* player = Entities::curr_player;
+    gun->xpos = player->xpos + 10;
+    gun->ypos = player->ypos + 10;
     gun->angle = Game::get_degree(gun->xpos, gun->ypos, mouse_x, mouse_y);
     }
 
@@ -139,8 +134,6 @@ void Game::Update()
         //e->Move;
 
         SDL_Rect enemy_rect = entity_to_rect(e);
-        // offset the x value so that guns appears near the player; not on top
-        enemy_rect.x += 100;
 
          for (auto& b : Gun::bullets)
          {
@@ -168,17 +161,18 @@ void Game::Draw()
 {
 
     Gun* gun = Entities::curr_gun;
+    Player* player = Entities::curr_player;
 
     SDL_RenderClear(GameWindow::renderer);
 
     SDL_Rect player_rect;
-    player_rect.x = gun->xpos;
-    player_rect.y = gun->ypos;
-    player_rect.h = gun->height;
-    player_rect.w = gun->width;
+    player_rect.x = player->xpos;
+    player_rect.y = player->ypos;
+    player_rect.h = player->height;
+    player_rect.w = player->width;
 
    
-    SDL_RenderCopy(GameWindow::renderer, Player::image, NULL, &player_rect);   
+    SDL_RenderCopy(GameWindow::renderer, player->image, NULL, &player_rect);   
 
     SDL_Rect gun_rect;
     gun_rect.x = gun->xpos;
@@ -217,9 +211,15 @@ void Game::Clean()
     {
         delete b;
     }
-    SDL_DestroyTexture(Player::image);
+    for (auto& e : Entities::enemies)
+    {
+        delete e;
+    }
+    SDL_DestroyTexture(Entities::curr_player->image);
     SDL_DestroyRenderer(GameWindow::renderer);
     SDL_DestroyWindow(GameWindow::window);
+    SDL_FreeCursor(cursor);
+    SDL_FreeSurface(cursor_surface);
     SDL_Quit();
 }
 
@@ -251,49 +251,3 @@ SDL_Rect Game::entity_to_rect(const entity& src)
     return dst;
 }
 
-
-
-
-void Game::HandleDebug()
-{
-
-    //bunch of messy code but no one will use this but me so who cares 
-        
-        printf("current X coordinate: %f \n", Player::xpos);
-       
-        printf("current Y coordinate: %f \n", Player::ypos);
-
-        printf("current player speed: %f \n", Player::speed);
-
-        printf("Player can shoot: %s \n", Player::canshoot ? "yes" : "no");
-
-        printf("Player can walk: %s \n", Player::canwalk ? "yes" : "no");
-
-        printf("Bullet Damage: %d \n", Gun::bullet_damage);
-
-        printf("Bullets: %lx \n", Gun::bullets.size());
-        
-        for (unsigned int i = 0; i < Entities::enemies.size(); ++i)
-        {
-            auto& e = Entities::enemies[i];
-            
-            printf("Enemy #%u has %d hp left\n", i + 1, e->health);
-        }
-      
-
-        for (auto& e: Entities::enemies)
-        {
-                e->image = Game::test_hitbox; 
-        }
-
-        for (auto& b: Gun::bullets)
-        {
-            b->image = Game::test_hitbox;
-        }
-
-       //SDL_DestroyTexture(test_hitbox);
-
-        // clear the screen 
-        printf("\033[H\033[2J\033[3J");
-    
-}

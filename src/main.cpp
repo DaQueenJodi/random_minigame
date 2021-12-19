@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Game.hpp"
 #include "GameWindow.hpp"
+#include "Debug.hpp"
 
 
 
@@ -9,7 +10,7 @@ int main(int argc, char** argv)
 {
     bool debug = false;
     if (argv[1])
-        debug = true;
+        Debug::debug_enabled = true;
 
 
     if (SDL_Init( SDL_INIT_EVERYTHING ) < 0) {
@@ -21,14 +22,12 @@ int main(int argc, char** argv)
     Game::Start();
     }
 
-    Game::CreatePlayer(50, 80, 1, "gfx/player.png");
+    Game::CreatePlayer(50, 80, "gfx/player.png");
     Game::CreateGun(0, 10, 5, "gfx/gun.png", "gfx/bullet.png");
     Game::CreateEnemy(EnemyUtils::EnemyType::Basic_Shooter);
 
     while (Game::Running())
-    {
-        if (debug)
-            Game::HandleDebug();   
+    {   
         Game::HandleEvents();
         Game::Update();
         Game::Draw();
